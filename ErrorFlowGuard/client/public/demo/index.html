@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowGuard SDK - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+        }
+
+        .btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .btn.network {
+            background: #f97316;
+        }
+
+        .btn.network:hover {
+            background: #ea580c;
+        }
+
+        .btn.promise {
+            background: #8b5cf6;
+        }
+
+        .btn.promise:hover {
+            background: #7c3aed;
+        }
+
+        .btn.success {
+            background: #10b981;
+        }
+
+        .btn.success:hover {
+            background: #059669;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .logs {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .logs h3 {
+            color: #60a5fa;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-left: 3px solid #374151;
+            background: #0f172a;
+            border-radius: 4px;
+        }
+
+        .log-entry.error {
+            border-left-color: #ef4444;
+        }
+
+        .log-entry.info {
+            border-left-color: #3b82f6;
+        }
+
+        .log-entry.success {
+            border-left-color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ FlowGuard SDK</h1>
+            <p>Professional Error Tracking & UX Monitoring Demo</p>
+        </div>
+
+        <div class="status" id="status">
+            🟢 SDK Ready - API Key Required
+        </div>
+
+        <div class="grid">
+            <!-- JavaScript Errors -->
+            <div class="card">
+                <h3>
+                    <span class="icon">🐛</span>
+                    JavaScript Errors
+                </h3>
+                <p style="margin-bottom: 15px; color: #64748b;">Test various JavaScript runtime errors</p>
+                <button class="btn" onclick="triggerReferenceError()">Reference Error</button>
+                <button class="btn" onclick="triggerTypeError()">Type Error</button>
+                <button class="btn" onclick="triggerSyntaxError()">Syntax Error</button>
+                <button class="btn" onclick="triggerCustomError()">Custom Error</button>
+            </div>
+
+            <!-- Network Errors -->
+            <div class="card">
+                <h3>
+                    <span class="icon">🌐</span>
+                    Network Errors
+                </h3>
+                <p style="margin-bottom: 15px; color: #64748b;">Test API calls and fetch failures</p>
+                <button class="btn network" onclick="trigger404Error()">404 Not Found</button>
+                <button class="btn network" onclick="trigger500Error()">500 Server Error</button>
+                <button class="btn network" onclick="triggerTimeoutError()">Network Timeout</button>
+                <button class="btn network" onclick="triggerCORSError()">CORS Error</button>
+            </div>
+
+            <!-- Promise Rejections -->
+            <div class="card">
+                <h3>
+                    <span class="icon">⏱️</span>
+                    Promise Rejections
+                </h3>
+                <p style="margin-bottom: 15px; color: #64748b;">Unhandled promise rejections</p>
+                <button class="btn promise" onclick="triggerUnhandledRejection()">Unhandled Rejection</button>
+                <button class="btn promise" onclick="triggerAsyncError()">Async Function Error</button>
+            </div>
+
+            <!-- Form Abandonment -->
+            <div class="card">
+                <h3>
+                    <span class="icon">📝</span>
+                    Form Abandonment Test
+                </h3>
+                <p style="margin-bottom: 15px; color: #64748b;">Fill out the form and try to leave the page</p>
+                <form id="testForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Enter your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn success">Submit Form</button>
+                    <button type="button" class="btn" onclick="clearForm()">Clear Form</button>
+                </form>
+            </div>
+
+            <!-- SDK Controls -->
+            <div class="card">
+                <h3>
+                    <span class="icon">⚙️</span>
+                    SDK Controls
+                </h3>
+                <p style="margin-bottom: 15px; color: #64748b;">Control SDK behavior</p>
+                <div class="form-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="text" id="apiKeyInput" placeholder="Enter your FlowGuard API key">
+                </div>
+                <button class="btn success" onclick="initializeSDK()">Initialize SDK</button>
+                <button class="btn" onclick="getSDKStatus()">Get Status</button>
+                <button class="btn" onclick="clearLogs()">Clear Logs</button>
+            </div>
+
+            <!-- Manual Tracking -->
+            <div class="card">
+                <h3>
+                    <span class="icon">📊</span>
+                    Manual Tracking
+                </h3>
+                <p style="margin-bottom: 15px; color: #64748b;">Send custom events and errors</p>
+                <div class="form-group">
+                    <label for="customMessage">Custom Error Message</label>
+                    <input type="text" id="customMessage" placeholder="Enter custom error message">
+                </div>
+                <button class="btn success" onclick="trackCustomError()">Track Error</button>
+                <button class="btn success" onclick="trackCustomEvent()">Track Event</button>
+            </div>
+        </div>
+
+        <div class="logs" id="logs">
+            <h3>📋 FlowGuard Logs</h3>
+            <div id="logContent">
+                <div class="log-entry info">
+                    [INFO] FlowGuard Demo loaded. Enter your API key to initialize the SDK.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load FlowGuard SDK modules -->
+    <script src="../flowguard-sdk/error-capture.js"></script>
+    <script src="../flowguard-sdk/reporter.js"></script>
+    <script src="../flowguard-sdk/strategies.js"></script>
+    <script src="../flowguard-sdk/flowguard.js"></script>
+
+    <script>
+        let isSDKInitialized = false;
+        let formModified = false;
+
+        // Logging function
+        function addLog(message, type = 'info') {
+            const logContent = document.getElementById('logContent');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            logContent.appendChild(logEntry);
+            logContent.parentElement.scrollTop = logContent.parentElement.scrollHeight;
+        }
+
+        // SDK initialization
+        function initializeSDK() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+
+            if (!apiKey) {
+                addLog('Please enter an API key', 'error');
+                return;
+            }
+
+            // Show which app is being used
+            if (apiKey === 'fg_demo123456789abcdef123456789abcdef') {
+                addLog('Using Demo App for testing', 'info');
+            } else {
+                addLog('Using custom API key (possibly FlowGuard Stress Test app)', 'info');
+            }
+
+            try {
+                FlowGuard.init({
+                    apiKey: apiKey,
+                    apiEndpoint: '/api/report',
+                    debug: true,
+                    autoRetry: true,
+                    formTracking: true,
+                    consoleLogging: true,
+                    context: {
+                        demo: true,
+                        userAgent: navigator.userAgent,
+                        timestamp: new Date().toISOString(),
+                        testApp: apiKey !== 'fg_demo123456789abcdef123456789abcdef' ? 'stress-test' : 'demo'
+                    },
+                    onError: function(errorData, result) {
+                        addLog(`Error handled: ${errorData.message}`, 'info');
+                        if (result && result.actionPlan) {
+                            addLog(`Action plan: ${result.actionPlan.message}`, result.actionPlan.retry ? 'warning' : 'info');
+                        }
+                    }
+                });
+
+                isSDKInitialized = true;
+                document.getElementById('status').innerHTML = '🟢 SDK Initialized & Active';
+                addLog('FlowGuard SDK initialized successfully', 'success');
+
+                // Set demo context
+                FlowGuard.setContext('demo', true);
+                FlowGuard.setContext('page', 'demo-page');
+
+            } catch (error) {
+                addLog(`SDK initialization failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Get SDK status
+        function getSDKStatus() {
+            if (!isSDKInitialized) {
+                addLog('SDK not initialized', 'error');
+                return;
+            }
+
+            const status = FlowGuard.getStatus();
+            addLog(`SDK Status: ${JSON.stringify(status, null, 2)}`, 'info');
+        }
+
+        // JavaScript error triggers
+        function triggerReferenceError() {
+            addLog('Triggering reference error...', 'info');
+            setTimeout(() => {
+                nonExistentFunction();
+            }, 100);
+        }
+
+        function triggerTypeError() {
+            addLog('Triggering type error...', 'info');
+            setTimeout(() => {
+                const obj = null;
+                obj.property.method();
+            }, 100);
+        }
+
+        function triggerSyntaxError() {
+            addLog('Triggering syntax error...', 'info');
+            setTimeout(() => {
+                eval('const invalid syntax here');
+            }, 100);
+        }
+
+        function triggerCustomError() {
+            addLog('Triggering custom error...', 'info');
+            setTimeout(() => {
+                throw new Error('Custom error triggered from FlowGuard demo');
+            }, 100);
+        }
+
+        // Network error triggers
+        async function trigger404Error() {
+            addLog('Triggering 404 error...', 'info');
+            try {
+                const response = await fetch('/nonexistent-endpoint');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                // Error will be captured by SDK
+            }
+        }
+
+        async function trigger500Error() {
+            addLog('Triggering 500 error...', 'info');
+            try {
+                const response = await fetch('https://httpstat.us/500');
+                if (!response.ok) {
+                    throw new Error(`Server Error ${response.status}`);
+                }
+            } catch (error) {
+                // Error will be captured by SDK
+            }
+        }
+
+        function triggerTimeoutError() {
+            addLog('Triggering timeout error...', 'info');
+            const controller = new AbortController();
+            setTimeout(() => controller.abort(), 1000);
+
+            fetch('https://httpstat.us/200?sleep=5000', {
+                signal: controller.signal
+            }).catch(error => {
+                // Error will be captured by SDK
+            });
+        }
+
+        function triggerCORSError() {
+            addLog('Triggering CORS error...', 'info');
+            fetch('https://example.com/api/data').catch(error => {
+                // Error will be captured by SDK
+            });
+        }
+
+        // Promise rejection triggers
+        function triggerUnhandledRejection() {
+            addLog('Triggering unhandled promise rejection...', 'info');
+            Promise.reject(new Error('Unhandled promise rejection from demo'));
+        }
+
+        async function triggerAsyncError() {
+            addLog('Triggering async function error...', 'info');
+            setTimeout(async () => {
+                throw new Error('Async function error from demo');
+            }, 100);
+        }
+
+        // Form handling
+        function clearForm() {
+            document.getElementById('testForm').reset();
+            formModified = false;
+            addLog('Form cleared', 'info');
+        }
+
+        // Manual tracking
+        function trackCustomError() {
+            if (!isSDKInitialized) {
+                addLog('SDK not initialized', 'error');
+                return;
+            }
+
+            const message = document.getElementById('customMessage').value || 'Custom error from demo';
+            FlowGuard.trackError(message, 'demo', { customData: true });
+            addLog(`Custom error tracked: ${message}`, 'success');
+        }
+
+        function trackCustomEvent() {
+            if (!isSDKInitialized) {
+                addLog('SDK not initialized', 'error');
+                return;
+            }
+
+            FlowGuard.trackEvent('demo_interaction', {
+                action: 'track_custom_event',
+                timestamp: new Date().toISOString()
+            });
+            addLog('Custom event tracked: demo_interaction', 'success');
+        }
+
+        // Clear logs
+        function clearLogs() {
+            document.getElementById('logContent').innerHTML = '';
+            addLog('Logs cleared', 'info');
+        }
+
+        // Form abandonment tracking
+        document.getElementById('testForm').addEventListener('input', () => {
+            formModified = true;
+        });
+
+        document.getElementById('testForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            formModified = false;
+            addLog('Form submitted successfully', 'success');
+            clearForm();
+        });
+
+        // Page unload warning for form abandonment
+        window.addEventListener('beforeunload', (e) => {
+            if (formModified) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Auto-initialize SDK if API key is in URL params
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const apiKey = urlParams.get('apiKey') || 'demo_key_12345';
+
+            if (apiKey) {
+                document.getElementById('apiKeyInput').value = apiKey;
+                setTimeout(() => {
+                    initializeSDK();
+                }, 500);
+            }
+        });
+    </script>
+    <script>
+        // Configuration - Get API key from URL parameter or use demo key
+        const urlParams = new URLSearchParams(window.location.search);
+        const apiKeyFromUrl = urlParams.get('apiKey');
+
+        const config = {
+            apiKey: apiKeyFromUrl || 'demo_key_12345', // Use real API key from URL or demo key
+            autoRetry: true,
+            formTracking: true,
+            consoleLogging: true
+        };
+    </script>
+</body>
+</html>

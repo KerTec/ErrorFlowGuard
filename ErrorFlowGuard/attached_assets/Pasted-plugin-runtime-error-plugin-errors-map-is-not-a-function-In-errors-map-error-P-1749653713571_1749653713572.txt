@@ -1,0 +1,41 @@
+plugin:runtime-error-plugin] errors.map is not a function. (In 'errors.map(
+      (error) => /* @__PURE__ */ jsxDEV("div", { "data-replit-metadata": "client/src/components/error-display.tsx:35:10", "data-component-name": "div", className: "p-3 bg-red-50 rounded-lg border border-red-200", children: /* @__PURE__ */ jsxDEV("div", { "data-replit-metadata": "client/src/components/error-display.tsx:36:16", "data-component-name": "div", className: "flex items-start justify-between", children: [
+        /* @__PURE__ */ jsxDEV("div", { "data-replit-metadata": "client/src/components/error-display.tsx:37:18", "data-component-name": "div", className: "flex-1", children: [
+          /* @__PURE__ */ jsxDEV("p", { "data-replit-metadata": "client/src/components/error-display.tsx:38:20", "data-component-name": "p", className: "text-sm font-medium text-red-900", children: error.type }, void 0, false, {
+            fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+            lineNumber: 38,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { "data-replit-metadata": "client/src/components/error-display.tsx:39:20", "data-component-name": "p", className: "text-xs text-red-600 mt-1", children: error.message }, void 0, false, {
+            fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+            lineNumber: 39,
+            columnNumber: 21
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { "data-replit-metadata": "client/src/components/error-display.tsx:40:20", "data-component-name": "p", className: "text-xs text-red-500 mt-1", children: [
+            "Source: ",
+            error.source
+          ] }, void 0, true, {
+            fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+            lineNumber: 40,
+            columnNumber: 21
+          }, this)
+        ] }, void 0, true, {
+          fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+          lineNumber: 37,
+          columnNumber: 19
+        }, this),
+        /* @__PURE__ */ jsxDEV("span", { "data-replit-metadata": "client/src/components/error-display.tsx:42:18", "data-component-name": "span", className: "text-xs text-red-400", children: new Date(error.timestamp).toLocaleTimeString() }, void 0, false, {
+          fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+          lineNumber: 42,
+          columnNumber: 19
+        }, this)
+      ] }, void 0, true, {
+        fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+        lineNumber: 36,
+        columnNumber: 17
+      }, this) }, error.id, false, {
+        fileName: "/home/runner/workspace/client/src/components/error-display.tsx",
+        lineNumber: 35,
+        columnNumber: 11
+      }, this)
+    )', 'errors.map' is undefined)
